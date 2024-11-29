@@ -24,7 +24,7 @@ function ReservationForm({ onSubmit }) {
     contactEmail: '',
     contactPhone: ''
   });
-  console.log('toolType', formData.toolType);
+  // console.log('toolType', formData.toolType);
 
  
   const [loading, setLoading] = useState(false);
@@ -56,7 +56,6 @@ function ReservationForm({ onSubmit }) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-
         // Update this section to match your API response structure
         const categorized = {};
         data.tools.forEach((product) => {
@@ -64,10 +63,7 @@ function ReservationForm({ onSubmit }) {
           if (!categorized[toolType]) {
             categorized[toolType] = [];
           }
-          categorized[toolType].push({
-            _id: product._id,
-            name: product.name, 
-          });
+          categorized[toolType].push(product);
         });
 
         setCategories(categorized);
@@ -106,8 +102,8 @@ function ReservationForm({ onSubmit }) {
 
   
   const handleDateChange = (newValue) => {
-    console.log('Pasirinktos startDate:', newValue.startDate);
-    console.log('Pasirinktos endDate:', newValue.endDate);
+    // console.log('Pasirinktos startDate:', newValue.startDate);
+    // console.log('Pasirinktos endDate:', newValue.endDate);
     
     setFormData((prev) => ({
       ...prev,
@@ -145,8 +141,8 @@ function ReservationForm({ onSubmit }) {
       contactPhone: formData.contactPhone
     };
 
-    console.log('Form Data:', formData); 
-    console.log('Payload:', payload);     
+    // console.log('Form Data:', formData); 
+    // console.log('Payload:', payload);     
 
     try {
       const response = await fetch('http://localhost:3000/reservations', {
@@ -173,7 +169,7 @@ function ReservationForm({ onSubmit }) {
       setLoading(false);
     }
   };
-
+console.log(tools)
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white shadow-2xl rounded-xl border-2 border-red500">
       <h2 className="text-2xl font-bold mb-4 flex items-center text-black">Tool Reservation</h2>

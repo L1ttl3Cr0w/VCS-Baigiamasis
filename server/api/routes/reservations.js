@@ -45,6 +45,7 @@ router.post('/', auth, async (req, res) => {
   // Is request paimamas productId, quantity ir dateRange
   const { userId } = req.userData;
   const { productId, quantity, dateRange } = req.body;
+  console.log(req.params)
 
   // Patikrina ar dateRange teisingai ivestas
   if (!dateRange || !dateRange.from || !dateRange.to) {
@@ -67,13 +68,15 @@ router.post('/', auth, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    console.log('Received dateRange:', dateRange);
+    //console.log('Received dateRange:', dateRange);
+    /*
     console.log('Creating reservation with data:', {
       productId,
       quantity,
       userId,
       dateRange
     });
+    */
 
     // Sukuria nauja rezervacija
     const reservation = new Reservation({
@@ -86,7 +89,7 @@ router.post('/', auth, async (req, res) => {
         to: dateRange.to
       }
     });
-    console.log('Created reservation object:', reservation);
+    //console.log('Created reservation object:', reservation);
 
     // Iraso rezervacija i duomenu baze
     const savedReservation = await reservation.save();
