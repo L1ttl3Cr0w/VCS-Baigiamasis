@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import mongoose from 'mongoose';
 
-import Product from '../models/product.js';
+import Product from '../models/Product.js';
 import auth from '../middleware/auth.js';
 import adminAuth from '../middleware/admin.js';
 
