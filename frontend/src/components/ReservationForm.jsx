@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
-import Datepicker from "react-tailwindcss-datepicker";
+import Datepicker from 'react-tailwindcss-datepicker';
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 
 
 function ReservationForm({ onSubmit }) {
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
   const [formData, setFormData] = useState({
     toolType: '',
     tool: '',
@@ -28,12 +37,12 @@ function ReservationForm({ onSubmit }) {
   const disabledDates = [
     {
       startDate: new Date(2024, 11, 1), // December 1, 2024
-      endDate: new Date(2024, 11, 10)   // December 10, 2024
+      endDate: new Date(2024, 11, 10) // December 10, 2024
     },
     {
       startDate: new Date(2024, 11, 20), // December 20, 2024
-      endDate: new Date(2024, 11, 25)   // December 25, 2024
-    },
+      endDate: new Date(2024, 11, 25) // December 25, 2024
+    }
   ];
 
   const pickupLocations = ['Vilnius', 'Kaunas', 'Klaipėda', 'Šiauliai', 'Panevėžys'];
@@ -43,12 +52,13 @@ function ReservationForm({ onSubmit }) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/products');
+        const response = await fetch('http://localhost:3000/tools');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
 
+        // Update this section to match your API response structure
         const categorized = {};
         data.products.forEach((product) => {
           const toolType = product.toolType;
@@ -167,9 +177,7 @@ function ReservationForm({ onSubmit }) {
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white shadow-2xl rounded-xl border-2 border-red500">
-      <h2 className="text-2xl font-bold mb-4 flex items-center text-black">
-        Tool Reservation
-      </h2>
+      <h2 className="text-2xl font-bold mb-4 flex items-center text-black">Tool Reservation</h2>
       {fetchError ? (
         <p className="text-red-500">{fetchError}</p>
       ) : (
@@ -177,16 +185,14 @@ function ReservationForm({ onSubmit }) {
           {/* Select Category */}
           <div>
             <label className="block mb-1 font-bold text-black">Select Category</label>
-            <select
-              name="toolType"
-              value={formData.toolType}
-              onChange={handleChange}
-              className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black"
-              required
-            >
-              <option value="" className="text-gray-500">Categories</option>
-              {Object.keys(categories).map(type => (
-                <option key={type} value={type} className="text-black">{type}</option>
+            <select name="toolType" value={formData.toolType} onChange={handleChange} className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black" required>
+              <option value="" className="text-gray-500">
+                Categories
+              </option>
+              {Object.keys(categories).map((type) => (
+                <option key={type} value={type} className="text-black">
+                  {type}
+                </option>
               ))}
             </select>
           </div>
@@ -202,8 +208,10 @@ function ReservationForm({ onSubmit }) {
               required
               disabled={!formData.toolType}
             >
-              <option value="" className="text-gray-500">Tools</option>
-              {tools.map(tool => (
+              <option value="" className="text-gray-500">
+                Tools
+              </option>
+              {tools.map((tool) => (
                 <option key={tool._id} value={tool._id} className="text-black">
                   {tool.name}
                 </option>
@@ -214,16 +222,14 @@ function ReservationForm({ onSubmit }) {
           {/* Pickup Location */}
           <div>
             <label className="block mb-1 font-bold text-black">Pickup Location</label>
-            <select
-              name="pickupLocation"
-              value={formData.pickupLocation}
-              onChange={handleChange}
-              className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black"
-              required
-            >
-              <option value="" className="text-gray-500">Locations</option>
-              {pickupLocations.map(location => (
-                <option key={location} value={location} className="text-black">{location}</option>
+            <select name="pickupLocation" value={formData.pickupLocation} onChange={handleChange} className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black" required>
+              <option value="" className="text-gray-500">
+                Locations
+              </option>
+              {pickupLocations.map((location) => (
+                <option key={location} value={location} className="text-black">
+                  {location}
+                </option>
               ))}
             </select>
           </div>
@@ -232,60 +238,60 @@ function ReservationForm({ onSubmit }) {
           <div className="grid md:grid-cols-1 gap-3">
             <p className="font-bold">Reservation date</p>
             <Datepicker
-              primaryColor={"red"}
+              primaryColor={'red'}
               value={{ startDate: formData.startDate, endDate: formData.endDate }}
               onChange={handleDateChange}
               showShortcuts={true}
               placeholder="Select your date"
               showFooter={true}
               disabledDates={disabledDates}
-              className={""}
+              className={''}
               configs={{
                 shortcuts: {
                   today: {
-                    text: "Today",
+                    text: 'Today',
                     period: {
                       start: new Date(),
                       end: new Date()
                     }
                   },
                   tomorrow: {
-                    text: "Tomorrow",
+                    text: 'Tomorrow',
                     period: {
                       start: new Date(new Date().setDate(new Date().getDate() + 1)),
                       end: new Date(new Date().setDate(new Date().getDate() + 1))
                     }
                   },
                   next3Days: {
-                    text: "Next 3 days",
+                    text: 'Next 3 days',
                     period: {
                       start: new Date(),
                       end: new Date(new Date().setDate(new Date().getDate() + 3))
                     }
                   },
                   next5Days: {
-                    text: "Next 5 days",
+                    text: 'Next 5 days',
                     period: {
                       start: new Date(),
                       end: new Date(new Date().setDate(new Date().getDate() + 5))
                     }
                   },
                   next7Days: {
-                    text: "Next 7 days",
+                    text: 'Next 7 days',
                     period: {
                       start: new Date(),
                       end: new Date(new Date().setDate(new Date().getDate() + 7))
                     }
                   },
                   next14Days: {
-                    text: "Next 14 days",
+                    text: 'Next 14 days',
                     period: {
                       start: new Date(),
                       end: new Date(new Date().setDate(new Date().getDate() + 14))
                     }
                   },
                   next30days: {
-                    text: "Next 30 days",
+                    text: 'Next 30 days',
                     period: {
                       start: new Date(),
                       end: new Date(new Date().setDate(new Date().getDate() + 30))
@@ -300,37 +306,16 @@ function ReservationForm({ onSubmit }) {
           <div className="grid md:grid-cols-2 gap-3">
             <div>
               <label className="block mb-1 text-black">Contact Name</label>
-              <input
-                type="text"
-                name="contactName"
-                value={formData.contactName}
-                onChange={handleChange}
-                className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black"
-                required
-              />
+              <input type="text" name="contactName" value={formData.contactName} onChange={handleChange} className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black" required />
             </div>
             <div>
               <label className="block mb-1 text-black">Contact Email</label>
-              <input
-                type="email"
-                name="contactEmail"
-                value={formData.contactEmail}
-                onChange={handleChange}
-                className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black"
-                required
-              />
+              <input type="email" name="contactEmail" value={formData.contactEmail} onChange={handleChange} className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black" required />
             </div>
           </div>
           <div>
             <label className="block mb-1 text-black">Contact Phone</label>
-            <input
-              type="tel"
-              name="contactPhone"
-              value={formData.contactPhone}
-              onChange={handleChange}
-              className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black"
-              required
-            />
+            <input type="tel" name="contactPhone" value={formData.contactPhone} onChange={handleChange} className="w-full p-2 border-2 border-red500 rounded-lg focus:outline-none focus:ring-1 focus:ring-red500 text-black" required />
           </div>
 
           {/* Reservation button */}
