@@ -1,4 +1,4 @@
-const Search = ({ searchCriteria, onSearch }) => {
+const Search = ({ searchCriteria, setSearchCriteria }) => {
 
     return (
         <div className="flex items-center justify-center pt-5">
@@ -10,14 +10,14 @@ const Search = ({ searchCriteria, onSearch }) => {
                         <input
                             type="text"
                             value={searchCriteria.searchText}
-                            onChange={(e) => onSearch({ ...searchCriteria, searchText: e.target.value })}
+                            onChange={(e) => setSearchCriteria({ ...searchCriteria, searchText: e.target.value })}
                             placeholder="Search for equipment"
                             className="md:h-[70px] text-[20px] leading-[30px] w-full pl-[50px] pr-[40px] py-[10px] rounded-full md:rounded-[50px] md:border-[1px] shadow-md border-gray-300"
                         />
                         <button
                             type="button"
                             onClick={() => {
-                                onSearch({ searchText: '', category: '' });
+                                setSearchCriteria({ searchText: '', category: '' });
                             }}
                             className={`border-0 rounded-full text-white bg-gray-500 absolute w-[25px] h-[25px] md:w-[130px] md:h-[45px] text-[15px] md:text-[20px] right-3 top-[25%] md:top-[20%] flex items-center justify-center transition-all duration-300 transform ${searchCriteria.searchText || searchCriteria.category ? 'translate-x-0 opacity-100 visible' : 'translate-x-full opacity-0 invisible'
                                 }`}

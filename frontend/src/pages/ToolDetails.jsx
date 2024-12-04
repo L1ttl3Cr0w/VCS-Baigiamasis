@@ -3,7 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import ImageGallery from "react-image-gallery";
 
 function ToolDetails() {
+  // Setting default values to avoid errors while loading page
   const [tool, setTool] = useState({ description: { imageURIs: [], details: {}, basePrice: '' } });
+
   const [totalPrice, setTotalPrice] = useState();
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
@@ -44,6 +46,7 @@ function ToolDetails() {
     setTotalPrice(tool.description.basePrice * newQuantity);
   }
 
+  // Constructing array of images uri for image gallery component
   const galleryItems = tool.description.imageURIs.map((uri) => ({
     original: uri,
   }));

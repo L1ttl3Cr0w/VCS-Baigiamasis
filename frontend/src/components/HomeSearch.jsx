@@ -42,10 +42,12 @@ const HomeSearch = () => {
           </div>
 
           <div className={`flex flex-col gap-2 md:inline-block mb-3 md:mb-0 border-none md:h-[96px] text-[20px] leading-[30px] md:bg-white md:rounded-r-[50px] transition-all duration-300 overflow-hidden ${searchText || selectedCategory ? 'md:w-[22%]' : 'md:w-[11%]'}`}>
+            {/* Redirects to Tools page with selected Category and SearchText params */}
             <Link to={`/tools?category=${selectedCategory}&searchText=${searchText}`} type="submit" className="border-0 rounded-full text-white bg-red-500 md:relative md:w-[55px] h-[45px] md:h-[55px] text-[20px] md:top-[21px] flex items-center md:inline-block">
               <i className="bi bi-search md:absolute pr-2 pl-5 md:pr-0 md:pl-0 md:left-[18px] md:top-[11px]"></i>
               <span className="md:hidden pr-5">Search</span>
             </Link>
+            {/* Clears SearchText and SelectedCategory states */}
             <button
               type="button"
               onClick={() => {

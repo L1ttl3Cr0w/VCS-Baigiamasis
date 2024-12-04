@@ -8,6 +8,8 @@ function ToolGrid({ searchCriteria = { searchText: '', category: '' }, limit = '
   const [currentPage, setCurrentPage] = useState(1);
   const [toolsPerPage] = useState(12);
 
+
+  // Variables to determine page number and total page count
   const indexOfLastTool = currentPage * toolsPerPage;
   const indexOfFirstTool = indexOfLastTool - toolsPerPage;
   const currentTools = (searchResults && isSearchActive ? searchResults : products).slice(indexOfFirstTool, indexOfLastTool);
@@ -19,6 +21,7 @@ function ToolGrid({ searchCriteria = { searchText: '', category: '' }, limit = '
         return res.json();
       })
       .then((data) => {
+        // Filters out tools without any data
         const tools = data.tools.map((item) => {
           if (item.name && item.description && item.price && item.images) {
             return item
@@ -41,6 +44,7 @@ function ToolGrid({ searchCriteria = { searchText: '', category: '' }, limit = '
   }, [searchCriteria, products])
 
   const handleSearch = () => {
+    // Stops handleSearch if searchCriteria or products does not exists or they are empty
     if ((!searchCriteria.category && !searchCriteria.searchText) || products.length == 0) {
       setSearchResults(null);
       setIsSearchActive(false);
@@ -49,6 +53,7 @@ function ToolGrid({ searchCriteria = { searchText: '', category: '' }, limit = '
 
     setIsSearchActive(true)
 
+    //filters products by searchText and category
     const filteredProducts = products.filter((product) => {
       const matchesSearch = !searchCriteria.searchText || (product.name || '').toLowerCase().includes(searchCriteria.searchText.toLowerCase());
 
@@ -73,6 +78,7 @@ function ToolGrid({ searchCriteria = { searchText: '', category: '' }, limit = '
         </div>
       </div>
 
+      {/* Shows paging if limit is not set */}
       {!limit && <div className="mt-6 flex justify-center gap-4">
         <button
           onClick={() => setCurrentPage((prev) => prev - 1)}

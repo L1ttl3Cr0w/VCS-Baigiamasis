@@ -15,6 +15,7 @@ import Search from '../components/Search'
 
 
 const Tools = () => {
+    // Takes SearchText and Category from URL params or leaves empty if none
     const [searchCriteria, setSearchCriteria] = useState({
         searchText: useSearchParams()[0].get("searchText") || '',
         category: useSearchParams()[0].get("category") || ''
@@ -36,7 +37,8 @@ const Tools = () => {
 
     return (
         <div>
-            <Search searchCriteria={searchCriteria} onSearch={setSearchCriteria} />
+            {/* Passes searchCriteria as prop to fill input field with value */}
+            <Search searchCriteria={searchCriteria} setSearchCriteria={setSearchCriteria} />
             <div className='flex flex-col items-center'>
                 <div
                     className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 w-[75%] xs:w-[60%] sm:w-[70%] max-w-[900px] mt-3 mb-6 md:mt-7"
