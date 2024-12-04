@@ -25,7 +25,7 @@ function AdminToolNewForm() {
   };
 
   useEffect(() => {
-    console.log(itemEdit);
+    console.log("First check", itemEdit);
   }, [itemEdit]);
 
   const handleItemPost = async (e) => {
@@ -41,6 +41,7 @@ function AdminToolNewForm() {
           itemEdit,
         }),
       });
+      console.log("This string:", itemEdit)
       const data = await response.json();
       if (response.ok) {
         console.log("Post success:", data);
@@ -51,7 +52,7 @@ function AdminToolNewForm() {
   };
 
   useEffect(() => {
-    console.log(itemEdit);
+    console.log("Second check:", itemEdit);
   }, [itemEdit]);
 
   return (

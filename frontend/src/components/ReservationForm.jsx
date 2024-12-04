@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { useContext } from 'react';
-import { Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Map from './Map';
 import { toast } from 'react-toastify';
@@ -15,7 +15,6 @@ function ReservationForm({ onSubmit }) {
   const quantity = parseInt(searchParams.get('quantity')) || 1;
   const category = searchParams.get('category');
   const toolName = searchParams.get('name');
-  const { id } = useParams();
   const [pickupLocations, setPickupLocations] = useState([]);
   const [data_send, setData_send] = useState([]);
   const [pickupAddress, setPickupAddress] = useState('');
@@ -25,23 +24,12 @@ function ReservationForm({ onSubmit }) {
   const [fetchError, setFetchError] = useState(null);
   const [disabledDates, setDisabledDates] = useState([]);
   const today = new Date();
-
   const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-
-  const validatePhone = (phoneNumber) => {
-    return phoneRegex.test(phoneNumber);
-  };
-
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-
-
-  const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
     toolType: '',
     tool: '',
     toolName: '',
-    quantity: quantity,
+    quantity: '',
     startDate: today,
     endDate: today,
     pickupLocation: '',
@@ -49,8 +37,6 @@ function ReservationForm({ onSubmit }) {
     contactEmail: user.email,
     contactPhone: user.phoneNumber
   });
-
-  const getAddress = (address) => setPickupAddress(address);
 
   useEffect(() => {
     const fetchStoresLocations = async () => {
@@ -138,6 +124,14 @@ function ReservationForm({ onSubmit }) {
       console.error('Error fetching reservations:', error);
     }
   };
+
+  const validatePhone = (phoneNumber) => {
+    return phoneRegex.test(phoneNumber);
+  };
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
 
 
   const handleChange = (e) => {
@@ -311,23 +305,20 @@ function ReservationForm({ onSubmit }) {
               ))}
             </select>
           </div>
-
-          {formData.pickupLocation && (
+              {formData.pickupLocation && (
             <div>
               <Map
                 className="size-fit aspect-auto"
                 data={data_send}
-                getAddress={getAddress}
+                pickupAddress={setPickupAddress}
                 current_location={formData.pickupLocation}
               />
             </div>
-          )}
-
+              )}
           {/* 
           <div>
             <Map className="size-fit aspect-auto" data={data_send} getAddress={getAddress} current_location={formData.pickupLocation} />
           </div> */}
-
           <div className="grid md:grid-cols-1 gap-3">
             <p className="font-bold">Reservation date </p>
             {formError && <span className="text-red-500">{formError}</span>}

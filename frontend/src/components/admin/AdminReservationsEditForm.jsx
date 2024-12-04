@@ -71,18 +71,19 @@ const AdminReservationEditForm = () => {
       }));
     }
   };
-
+console.log(formData)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3000/reservations/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(formData)
-      });
-
+      })
+      console.log(formData)
       if (response.ok) {
         refreshReservations();
         toast.success('Reservation updated successfully');

@@ -2,14 +2,14 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const toolsSchema = new Schema({
-  toolType: { type: String, required: true },
+  toolType: { type: String, required: false },
   description: {
-    nameRetail: { type: String, required: true },
-    basePrice: { type: String, required: true },
+    nameRetail: { type: String, required: false },
+    basePrice: { type: String, required: false },
     imageURIs: [String],
     details: {
-      productType:{type: String, required: true},
-      trademark:{type: String, required: true},
+      productType:{type: String, required: false},
+      trademark:{type: String, required: false},
       model: String,
       generator_type: String,
       engine_type: String,
@@ -64,9 +64,9 @@ const toolsSchema = new Schema({
       saw_hole_diameter: String,
       adjustable_support: Boolean,
       additional_information: String,
-      warranty: {type: Number, required: true},
-      company_warranty: {type: Number, required: true},
-      origin_country: {type: String, required: true}
+      warranty: {type: Number, required: false},
+      company_warranty: {type: Number, required: false},
+      origin_country: {type: String, required: false}
     }
   },
   isAvailable: { type: Boolean, required: true, default: false },

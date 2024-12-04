@@ -8,10 +8,10 @@ router.get('/', controller.procureStores);
 
 router.get('/:id', controller.procureStore);
 
-router.post('/', controller.produceStore);
+router.post('/', auth, adminAuth, controller.produceStore);
 
-router.patch('/:id', controller.reformStore);
+router.patch('/:id', auth, adminAuth, controller.reformStore);
 
-router.delete('/:id', controller.eradicateStore);
+router.delete('/:id', auth, adminAuth, controller.eradicateStore);
 
 export default router;

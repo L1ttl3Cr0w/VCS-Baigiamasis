@@ -14,7 +14,7 @@ function AdminTools() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  console.log(products)
   return (
     <>
       <div className="sticky top-0">

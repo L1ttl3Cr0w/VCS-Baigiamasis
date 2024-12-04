@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
 
-const Map = ({data, getAddress, current_location}) => {
+const Map = ({data, current_location, pickupAddress}) => {
   const [geolocation, setGeoLocation] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -34,7 +34,11 @@ const Map = ({data, getAddress, current_location}) => {
       }
       }
     checkIfSelected()
-  }, [current_location]);
+  }, [current_location, data]);
+const sendAddress = (address) => {
+  pickupAddress(address)
+}
+
   return (
     <>
       {!isLoading ? (
@@ -53,7 +57,7 @@ const Map = ({data, getAddress, current_location}) => {
               <Marker key={store._id} position={store.geo_location}>
                 <Popup>
                   {store.store_name} <br /> {store.address} <br />
-                  <button name='pickupLocation' onClick={getAddress(store.address)}>Select this store</button>
+                  <button name='pickupLocation' value={store.address} onClick={() => sendAddress(store.address)}>Select this store</button>
                 </Popup>
               </Marker>
             ))}

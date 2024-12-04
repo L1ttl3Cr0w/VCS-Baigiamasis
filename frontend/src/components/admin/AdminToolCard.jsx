@@ -1,6 +1,7 @@
 import { Link, useOutletContext } from "react-router-dom";
 
 function AdminToolCard({ item, passItem }) {
+  console.log(item)
   return (
     <Link to={`edit/${item._id}`}>
       <div

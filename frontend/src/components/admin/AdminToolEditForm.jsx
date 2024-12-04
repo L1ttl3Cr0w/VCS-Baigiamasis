@@ -6,7 +6,7 @@ function AdminToolEditForm() {
   const [product] = useOutletContext();
   const [itemEdit, setItemEdit] = useState({ product });
   const token = localStorage.token;
-
+console.log(product)
   const handleItemPatch = async (e) => {
     e.preventDefault();
     try {
@@ -24,6 +24,7 @@ function AdminToolEditForm() {
         }
       );
       const data = await response.json();
+      console.log(response)
       if (response.ok) {
         console.log("Patch success:", data);
       }

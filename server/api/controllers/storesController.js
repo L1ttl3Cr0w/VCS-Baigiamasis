@@ -12,7 +12,8 @@ export const procureStores = async (req, res, next) => {
           return {
             _id: doc._id,
             location_city: doc.location_city,
-            stores_data: doc.stores
+            stores_data: doc.stores,
+            geo_location: doc.geo_location
           };
         }),
       };
@@ -22,7 +23,6 @@ export const procureStores = async (req, res, next) => {
 };
 export const procureStore = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id)
   if (!mongoose.Types.ObjectId.isValid) {
     return res.status(400).json({ error: 'No such store exists' });
   }
